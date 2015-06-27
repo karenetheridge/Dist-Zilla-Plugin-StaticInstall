@@ -1,4 +1,6 @@
 Revision history for Dist-Zilla-Plugin-StaticInstall
 
+{{$NEXT}}
+
 0.001     2015-06-27 19:44:36Z
           - Initial release.
