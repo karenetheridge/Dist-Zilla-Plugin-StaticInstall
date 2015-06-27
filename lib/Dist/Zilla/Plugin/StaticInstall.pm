@@ -3,7 +3,7 @@ use warnings;
 package Dist::Zilla::Plugin::StaticInstall;
 # ABSTRACT: Identify a distribution as eligible for static installation
 # KEYWORDS: distribution metadata toolchain static dynamic installation
-# vim: set ts=8 sts=4 sw=4 tw=78 et :
+# vim: set ts=8 sts=4 sw=4 tw=115 et :
 
 our $VERSION = '0.001';
 
