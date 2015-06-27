@@ -70,6 +70,8 @@ Toolchain Gang. Use with discretion!
 
 =head2 C<mode>
 
+=for stopwords usecase
+
 When set to C<on>, the value of C<x_static_install> is set to 1 (the normal usecase).
 
 When set to C<off>, the value of C<x_static_install> is set to 0, which is
@@ -78,6 +80,8 @@ equivalent to not providing this field at all.
 (Coming in a later release: support for C<mode = auto>, which will determine
 the value of this field automatically; also warnings or fatal errors when the
 flag is being used incorrectly.)
+
+=for Pod::Coverage metadata
 
 =head1 SUPPORT
 
