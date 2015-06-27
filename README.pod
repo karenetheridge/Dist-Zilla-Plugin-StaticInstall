@@ -1,20 +1,47 @@
 =pod
 
+=encoding UTF-8
+
+=head1 NAME
+
+Dist::Zilla::Plugin::StaticInstall - Identify a distribution as eligible for static installation
+
+=head1 VERSION
+
+version 0.001
+
 =head1 SYNOPSIS
 
 In your F<dist.ini>:
 
     [StaticInstall]
+    mode = on
 
 =head1 DESCRIPTION
 
-This is a L<Dist::Zilla> plugin that...
+This is a L<Dist::Zilla> plugin that, when C<mode> is C<on>, provides the following distribution metadata:
+
+    x_static_install : "1"
+
+The definition of a "static installation" is still being refined by the Perl
+Toolchain Gang. Use with discretion!
 
 =head1 CONFIGURATION OPTIONS
 
-=head2 C<foo>
+=head2 C<mode>
 
-...
+=for stopwords usecase
+
+When set to C<on>, the value of C<x_static_install> is set to 1 (the normal usecase).
+
+When set to C<off>, the value of C<x_static_install> is set to 0, which is
+equivalent to not providing this field at all.
+
+(Coming in a later release: support for C<mode = auto>, which will determine
+the value of this field automatically; also warnings or fatal errors when the
+flag is being used incorrectly.)
+
+=for Pod::Coverage metadata
 
 =head1 SUPPORT
 
@@ -24,13 +51,25 @@ Bugs may be submitted through L<the RT bug tracker|https://rt.cpan.org/Public/Di
 (or L<bug-Dist-Zilla-Plugin-StaticInstall@rt.cpan.org|mailto:bug-Dist-Zilla-Plugin-StaticInstall@rt.cpan.org>).
 I am also usually active on irc, as 'ether' at C<irc.perl.org>.
 
-=head1 ACKNOWLEDGEMENTS
-
-...
-
 =head1 SEE ALSO
 
-=for :list
-* L<foo>
+=over 4
+
+=item *
+
+L<CPAN::Meta::Spec>
+
+=back
+
+=head1 AUTHOR
+
+Karen Etheridge <ether@cpan.org>
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2015 by Karen Etheridge.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
 
 =cut
