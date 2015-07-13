@@ -67,14 +67,27 @@ sub setup_installer
 {
     my $self = shift;
 
-    return if $self->mode ne 'auto';
-
+    # even if mode = off or on, we still run all the heuristics, as an extra check.
     my ($value, $message) = $self->_heuristics;
-    my $log = $self->dry_run ? 'log' : 'log_debug';
+
+    if ($self->mode eq 'on' and not $value)
+    {
+        $self->log_fatal(ref $message
+            ? [ 'mode = on but this distribution is ineligible: ' . $message->[0], splice(@$message, 1) ]
+            : 'mode = on but this distribution is ineligible: ' . $message
+        );
+    }
+
+    # be noisy if requested, or if we aren't enabling the flag but we could be
+    my $log = $self->dry_run || ($self->mode eq 'off' && $value) ? 'log' : 'log_debug';
 
     $self->$log($message) if $message;
-    $self->$log([ '%s x_static_install to %s', $self->dry_run ? 'would set' : 'setting', $value ]);
-    $self->zilla->distmeta->{x_static_install} = $value if not $self->dry_run;
+
+    $self->$log([ '%s x_static_install to %s',
+            ($self->mode ne 'auto' or $self->dry_run) ? 'would set' : 'setting',
+            $value ]);
+
+    $self->zilla->distmeta->{x_static_install} = $value if $self->mode eq 'auto' and not $self->dry_run;
 }
 
 # returns value, log message
@@ -213,6 +226,11 @@ When set to C<auto>, we attempt to calculate the proper value. When used with
 C<dry_run = 1>, the value isn't actually stored, but just provided in a
 diagnostic message. This is the recommended usage in a plugin bundle, for
 testing against a number of distributions at once.
+
+The calculations are always performed, no matter the value of C<mode> -- if it
+comes up with a different result than what you are setting, this is logged. If
+C<mode = on> and the calculations discover the distribution is ineligible for
+this flag, the build fails, to prevent you from releasing bad metadata.
 
 =head2 C<dry_run>
 

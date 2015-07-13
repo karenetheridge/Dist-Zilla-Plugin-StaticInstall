@@ -17,6 +17,8 @@ foreach my $static (0,1)
                 path(qw(source dist.ini)) => simple_ini(
                     [ GatherDir => ],
                     [ MetaConfig => ],
+                    [ MakeMaker => ],
+                    [ MetaJSON => ],
                     [ 'StaticInstall' => { mode => $static } ],
                 ),
                 path(qw(source lib Foo.pm)) => "package Foo;\n1;\n",
