@@ -1,6 +1,8 @@
 Revision history for Dist-Zilla-Plugin-StaticInstall
 
 {{$NEXT}}
+          - new mode allowing the automatic calculation of the flag
+            value, including a dry_run option for diagnostic purposes
 
 0.001     2015-06-27 19:44:36Z
           - Initial release.

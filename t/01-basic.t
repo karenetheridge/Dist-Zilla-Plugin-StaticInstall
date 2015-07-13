@@ -42,6 +42,7 @@ foreach my $static (0,1)
                         config => {
                             'Dist::Zilla::Plugin::StaticInstall' => {
                                 mode => ($static ? 'on' : 'off'),
+                                dry_run => 0,
                             },
                         },
                         name => 'StaticInstall',
