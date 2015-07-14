@@ -37,7 +37,7 @@ around dump_config => sub
 
     $config->{+__PACKAGE__} = {
         mode => $self->mode,
-        dry_run => $self->dry_run,
+        dry_run => $self->dry_run ? 1 : 0,
     };
 
     return $config;
