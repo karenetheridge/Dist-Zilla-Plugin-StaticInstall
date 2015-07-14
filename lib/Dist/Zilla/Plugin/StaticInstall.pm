@@ -57,10 +57,8 @@ sub metadata
     return +{ x_static_install => 0 } if $mode eq 'off';
     return +{ x_static_install => 1 } if $mode eq 'on';
 
-    return +{} if $self->dry_run;
-
-    # we'll calculate this value later in the build and munge it in
-    return +{ x_static_install => 'PLACEHOLDER' };
+    # if mode = auto and dry_run = 0, we'll add it later
+    return +{};
 }
 
 sub setup_installer

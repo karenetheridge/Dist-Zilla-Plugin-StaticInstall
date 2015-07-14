@@ -1,6 +1,7 @@
 Revision history for Dist-Zilla-Plugin-StaticInstall
 
 {{$NEXT}}
+          - cooperate with [ModuleBuildTiny]'s static = auto feature
 
 0.002     2015-07-14 02:43:32Z
           - new mode allowing the automatic calculation of the flag
