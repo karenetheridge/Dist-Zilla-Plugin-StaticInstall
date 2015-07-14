@@ -159,6 +159,10 @@ sub _heuristics
     my @xs_files = grep { /\.xs$/ } @filenames;
     return (0, [ 'found .xs file%s %s', @xs_files > 1 ? 's' : '', join(', ', sort @xs_files) ]) if @xs_files;
 
+    $self->$log('checking .pm, .pod, .pl files');
+    my @root_files = grep { m{^[^/]*\.(pm|pl|pod)$} and !m{^lib/} } @filenames;
+    return (0, [ 'found %s in the root', join(', ', sort @root_files) ]) if @root_files;
+
     return 1;
 }
 
@@ -208,6 +212,7 @@ The current preconditions for C<x_static_install> being true include:
 * no other plugins may modify F<Makefile.PL> nor F<Build.PL>
 * the L<C<[MetaJSON]>|Dist::Zilla::Plugin::MetaJSON> plugin must be used, at (the default) meta-spec version 2
 * no F<.xs> files may be present
+* F<.pm>, F<.pod>, F<.pl> files in the root may not be present
 
 =end :list
 

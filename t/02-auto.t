@@ -229,6 +229,33 @@ my @tests = (
         ],
     },
     {
+        test_name => '.pm, .pod, .pl files in root',
+        zilla_config_pre => [
+            [ MakeMaker => ],
+            [ MetaJSON => ],
+        ],
+        zilla_files => [
+            path(qw(source Bar.pm)) => "package Bar;\n1;\n",
+            path(qw(source blah.pl)) => "#!/usr/bin/perl;\nexit 0;\n1;\n",
+            path(qw(source README.pod)) => "This distribution is awesome\n",
+            path(qw(source examples demo.pl)) => "#!/usr/bin/perl;\nexit 0;\n1;\n",
+        ],
+        x_static_install => 0,
+        messages => [
+            'checking dynamic_config',
+            'checking configure prereqs',
+            'checking build prereqs',
+            'checking sharedirs',
+            'checking installer plugins',
+            'checking for munging of Makefile.PL',
+            'checking META.json',
+            'checking for .xs files',
+            'checking .pm, .pod, .pl files',
+            'found Bar.pm, README.pod, blah.pl in the root',
+            'setting x_static_install to 0',
+        ],
+    },
+    {
         test_name => 'static distribution',
         zilla_config_pre => [
             [ MakeMaker => ],
@@ -244,6 +271,7 @@ my @tests = (
             'checking for munging of Makefile.PL',
             'checking META.json',
             'checking for .xs files',
+            'checking .pm, .pod, .pl files',
             'setting x_static_install to 1',
         ],
     },
