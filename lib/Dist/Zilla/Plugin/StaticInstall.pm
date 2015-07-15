@@ -104,20 +104,20 @@ sub _heuristics
     delete @extra_configure_requires{qw(ExtUtils::MakeMaker Module::Build::Tiny File::ShareDir::Install perl)};
     return (0, [ 'found configure prereq%s %s',
             keys(%extra_configure_requires) > 1 ? 's' : '',
-            join(', ', keys %extra_configure_requires) ]) if keys %extra_configure_requires;
+            join(', ', sort keys %extra_configure_requires) ]) if keys %extra_configure_requires;
 
     $self->$log('checking build prereqs');
     my @build_requires = grep { $_ ne 'perl' } keys %{ $distmeta->{prereqs}{build}{requires} };
     return (0, [ 'found build prereq%s %s',
             @build_requires > 1 ? 's' : '',
-            join(', ', @build_requires) ]) if @build_requires;
+            join(', ', sort @build_requires) ]) if @build_requires;
 
     $self->$log('checking sharedirs');
     my $share_dir_map = $self->zilla->_share_dir_map;
     my @module_sharedirs = keys %{ $share_dir_map->{module} };
     return (0, [ 'found module sharedir%s for %s',
             @module_sharedirs > 1 ? 's' : '',
-            join(', ', @module_sharedirs) ]) if @module_sharedirs;
+            join(', ', sort @module_sharedirs) ]) if @module_sharedirs;
 
     $self->$log('checking installer plugins');
     my @installers = @{ $self->zilla->plugins_with(-InstallTool) };
@@ -131,7 +131,7 @@ sub _heuristics
     my @other_installers = grep { blessed($_) !~ /^Dist::Zilla::Plugin::((MakeMaker|ModuleBuildTiny)(::Fallback)?|StaticInstall)$/ } @installers;
     return (0, [ 'found install tool%s %s that will add extra content to Makefile.PL,Build.PL',
             @other_installers > 1 ? 's' : '',
-            join(', ', map { blessed($_) } @other_installers) ]) if @other_installers;
+            join(', ', sort map { blessed($_) } @other_installers) ]) if @other_installers;
 
     # check that no other plugins put their grubby hands on our installer file(s)
     foreach my $installer_file (grep { $_->name eq 'Makefile.PL' or $_->name eq 'Build.PL' } @{ $self->zilla->files })
@@ -155,7 +155,7 @@ sub _heuristics
 
     $self->$log('checking for .xs files');
     my @xs_files = grep { $_->name =~ /\.xs$/ } @{ $self->zilla->files };
-    return (0, [ 'found .xs file%s %s', @xs_files > 1 ? 's' : '', join(', ', map { $_->name } @xs_files) ]) if @xs_files;
+    return (0, [ 'found .xs file%s %s', @xs_files > 1 ? 's' : '', join(', ', sort map { $_->name } @xs_files) ]) if @xs_files;
 
     return 1;
 }
