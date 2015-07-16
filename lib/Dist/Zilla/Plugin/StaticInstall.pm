@@ -168,6 +168,10 @@ sub _heuristics
     my @baseext_files = $BASEEXT eq 'lib' ? () : grep { m{^$BASEEXT/[^/]*\.(pm|pl|pod)$} } @filenames;
     return (0, [ 'found %s in %s/', join(', ', sort map { s{^$BASEEXT/}{}; $_ } @baseext_files), $BASEEXT ]) if @baseext_files;
 
+    $self->$log('checking for .PL, .pmc files');
+    my @PL_files = grep { !/^(Makefile|Build)\.PL$/ and /\.(PL|pmc)$/ } @filenames;
+    return (0, [ 'found %s', join(', ', sort @PL_files) ]) if @PL_files;
+
     return 1;
 }
 
@@ -218,6 +222,7 @@ The current preconditions for C<x_static_install> being true include:
 * the L<C<[MetaJSON]>|Dist::Zilla::Plugin::MetaJSON> plugin must be used, at (the default) meta-spec version 2
 * no F<.xs> files may be present
 * F<.pm>, F<.pod>, F<.pl> files may not be present in the root of the distribution or in C<BASEEXT> (where C<BASEEXT> is the last component of the distribution name)
+* F<.pmc> and F<.PL> files (excluding F<Makefile.PL>, F<Build.PL>) may not be present
 
 =end :list
 

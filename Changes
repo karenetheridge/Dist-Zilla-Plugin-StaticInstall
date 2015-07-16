@@ -2,6 +2,7 @@ Revision history for Dist-Zilla-Plugin-StaticInstall
 
 {{$NEXT}}
           - also check for .pm, .pod, .pl files in the root and in BASEEXT/
+          - also check for .PL, .pmc files
 
 0.003     2015-07-14 03:24:15Z
           - cooperate with [ModuleBuildTiny]'s static = auto feature

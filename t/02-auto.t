@@ -283,6 +283,32 @@ my @tests = (
         ],
     },
     {
+        test_name => '.PL, .pmc files',
+        zilla_config_pre => [
+            [ MakeMaker => ],
+            [ MetaJSON => ],
+        ],
+        zilla_files => [
+            path(qw(source lib Bar.pmc)) => "package Bar;\n1;\n",
+            path(qw(source example Foo.PL)) => "#!/usr/bin/perl;\nexit 0;\n1;\n",
+        ],
+        x_static_install => 0,
+        messages => [
+            'checking dynamic_config',
+            'checking configure prereqs',
+            'checking build prereqs',
+            'checking sharedirs',
+            'checking installer plugins',
+            'checking for munging of Makefile.PL',
+            'checking META.json',
+            'checking for .xs files',
+            'checking .pm, .pod, .pl files',
+            'checking for .PL, .pmc files',
+            'found example/Foo.PL, lib/Bar.pmc',
+            'setting x_static_install to 0',
+        ],
+    },
+    {
         test_name => 'static distribution',
         zilla_config_pre => [
             [ MakeMaker => ],
