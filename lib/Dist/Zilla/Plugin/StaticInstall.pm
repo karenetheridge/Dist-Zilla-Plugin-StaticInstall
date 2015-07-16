@@ -138,7 +138,7 @@ sub _heuristics
     {
         $self->$log([ 'checking for munging of %s', $installer_file->name ]);
 
-        foreach my $added_by (split('; ', $installer_file->added_by))
+        foreach my $added_by (split(/; /, $installer_file->added_by))
         {
             return (0, [ '%s %s', $installer_file->name, $added_by ])
                 if $added_by =~ /from coderef added by/
