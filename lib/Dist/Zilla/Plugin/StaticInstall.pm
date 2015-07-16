@@ -113,8 +113,7 @@ sub _heuristics
             join(', ', sort @build_requires) ]) if @build_requires;
 
     $self->$log('checking sharedirs');
-    my $share_dir_map = $self->zilla->_share_dir_map;
-    my @module_sharedirs = keys %{ $share_dir_map->{module} };
+    my @module_sharedirs = keys %{ $self->zilla->_share_dir_map->{module} };
     return (0, [ 'found module sharedir%s for %s',
             @module_sharedirs > 1 ? 's' : '',
             join(', ', sort @module_sharedirs) ]) if @module_sharedirs;
