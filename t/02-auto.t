@@ -256,6 +256,33 @@ my @tests = (
         ],
     },
     {
+        test_name => '.pm, .pod, .pl files in BASEEXT',
+        zilla_config_pre => [
+            [ MakeMaker => ],
+            [ MetaJSON => ],
+        ],
+        zilla_files => [
+            path(qw(source Baz Bar.pm)) => "package Bar;\n1;\n",
+            path(qw(source Baz blah.pl)) => "#!/usr/bin/perl;\nexit 0;\n1;\n",
+            path(qw(source Baz README.pod)) => "This distribution is awesome\n",
+            path(qw(source examples demo.pl)) => "#!/usr/bin/perl;\nexit 0;\n1;\n",
+        ],
+        x_static_install => 0,
+        messages => [
+            'checking dynamic_config',
+            'checking configure prereqs',
+            'checking build prereqs',
+            'checking sharedirs',
+            'checking installer plugins',
+            'checking for munging of Makefile.PL',
+            'checking META.json',
+            'checking for .xs files',
+            'checking .pm, .pod, .pl files',
+            'found Bar.pm, README.pod, blah.pl in Baz/',
+            'setting x_static_install to 0',
+        ],
+    },
+    {
         test_name => 'static distribution',
         zilla_config_pre => [
             [ MakeMaker => ],
@@ -289,6 +316,9 @@ subtest $_->{test_name} => sub
         {
             add_files => {
                 path(qw(source dist.ini)) => simple_ini(
+                    {   # merge into root section
+                        name => 'Foo-Bar-Baz',
+                    },
                     [ GatherDir => ],
                     [ MetaConfig => ],
                     [ '=MyMetadata' ],
