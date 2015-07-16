@@ -1,5 +1,7 @@
 Revision history for Dist-Zilla-Plugin-StaticInstall
 
+{{$NEXT}}
+
 0.004     2015-07-16 04:51:52Z
           - also check for .pm, .pod, .pl files in the root and in BASEEXT/
           - also check for .PL, .pmc files
