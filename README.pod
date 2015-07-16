@@ -4,11 +4,11 @@
 
 =head1 NAME
 
-Dist::Zilla::Plugin::StaticInstall - Identify a distribution as eligible for static installation
+Dist::Zilla::Plugin::StaticInstall - (EXPERIMENTAL, DANGEROUS) Identify a distribution as eligible for static installation
 
 =head1 VERSION
 
-version 0.003
+version 0.004
 
 =head1 SYNOPSIS
 
@@ -17,6 +17,10 @@ In your F<dist.ini>:
     ; when you are confident this is correct
     [StaticInstall]
     mode = on
+
+    ; trust us to set the right value (DANGER!)
+    [StaticInstall]
+    mode = auto
 
     ; be conservative; just tell us what the value should be
     [StaticInstall]
@@ -29,8 +33,16 @@ This is a L<Dist::Zilla> plugin that, when C<mode> is C<on>, provides the follow
 
     x_static_install : "1"
 
-The definition of a "static installation" is still being refined by the Perl
-Toolchain Gang. Use with discretion!
+The plugin performs a number of checks against the distribution to determine
+the proper value of the C<x_static_install> metadata field. When set to a true
+value, this indicates that the can skip a number of installation steps
+(such as running F<Makefile.PL> or F<Build.PL> and acting on its side effects).
+
+The definition of a "static installation" is being prototyped by the Perl
+Toolchain Gang and is still being refined.  B<DO NOT USE THIS PLUGIN> if you
+are not involved in this testing. The proper installation of the built
+distribution cannot be guaranteed if installed with a static install-enabled
+client.
 
 The current preconditions for C<x_static_install> being true include:
 
@@ -87,6 +99,14 @@ the L<C<[MetaJSON]>|Dist::Zilla::Plugin::MetaJSON> plugin must be used, at (the 
 =item *
 
 no F<.xs> files may be present
+
+=item *
+
+F<.pm>, F<.pod>, F<.pl> files may not be present in the root of the distribution or in C<BASEEXT> (where C<BASEEXT> is the last component of the distribution name)
+
+=item *
+
+F<.pmc> and F<.PL> files (excluding F<Makefile.PL>, F<Build.PL>) may not be present
 
 =back
 
