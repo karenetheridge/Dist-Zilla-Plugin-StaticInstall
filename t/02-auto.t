@@ -334,6 +334,10 @@ subtest $_->{test_name} => sub
 {
     my $config = $_;
 
+    plan skip_all => 'Dist::Zilla is too old to be adding Makefile.PL during the file gathering phase'
+        if eq_deeply($config->{zilla_config_pre}, [ [ 'MakeMaker' ], [ '=MyMunger' ] ])
+            and not Dist::Zilla::Plugin::MakeMaker->does('Dist::Zilla::Role::FileGatherer');
+
     local $MyMetadata::metadata = $config->{metadata} || {};
     local $MyMetadata::prereqs = $config->{metadata}{prereqs};
 
