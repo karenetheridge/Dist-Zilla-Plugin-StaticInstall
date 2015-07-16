@@ -215,11 +215,14 @@ client.
 
 The current preconditions for C<x_static_install> being true include:
 
+=for stopwords sharedir
+
 =begin :list
 
 * C<dynamic_config> must be false in metadata
 * no prerequisites in configure-requires other than L<ExtUtils::MakeMaker>, L<Module::Build::Tiny>, or L<File::ShareDir::Install>
 * no prerequisites in build-requires
+* no L<module sharedir|Dist::Zilla::Plugin::ModuleShareDirs> (a L<distribution sharedir|Dist::Zilla::Plugin::ShareDir> is okay)
 * no installer plugins permitted other than:
 
 =for :list
