@@ -146,7 +146,7 @@ my @tests = (
             'checking build prereqs',
             'checking sharedirs',
             'checking installer plugins',
-            'found install tool MyOtherInstallTool that will add extra content to Makefile.PL,Build.PL',
+            'found install tool MyOtherInstallTool that will add extra content to Makefile.PL, Build.PL',
             'setting x_static_install to 0',
         ],
     },

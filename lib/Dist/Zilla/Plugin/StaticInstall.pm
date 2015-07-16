@@ -128,7 +128,7 @@ sub _heuristics
 
     # only these installer plugins can be trusted to not add disqualifying content
     my @other_installers = grep { blessed($_) !~ /^Dist::Zilla::Plugin::((MakeMaker|ModuleBuildTiny)(::Fallback)?|StaticInstall)$/ } @installers;
-    return (0, [ 'found install tool%s %s that will add extra content to Makefile.PL,Build.PL',
+    return (0, [ 'found install tool%s %s that will add extra content to Makefile.PL, Build.PL',
             @other_installers > 1 ? 's' : '',
             join(', ', sort map { blessed($_) } @other_installers) ]) if @other_installers;
 
