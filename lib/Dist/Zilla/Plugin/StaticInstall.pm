@@ -153,9 +153,11 @@ sub _heuristics
     return (0, 'META.json is not being added to the distribution') if not $metajson;
     return (0, [ 'META.json is using meta-spec version %s', $metajson->version ]) if $metajson->version ne '2';
 
+    my @filenames = map { $_->name } @{ $self->zilla->files };
+
     $self->$log('checking for .xs files');
-    my @xs_files = grep { $_->name =~ /\.xs$/ } @{ $self->zilla->files };
-    return (0, [ 'found .xs file%s %s', @xs_files > 1 ? 's' : '', join(', ', sort map { $_->name } @xs_files) ]) if @xs_files;
+    my @xs_files = grep { /\.xs$/ } @filenames;
+    return (0, [ 'found .xs file%s %s', @xs_files > 1 ? 's' : '', join(', ', sort @xs_files) ]) if @xs_files;
 
     return 1;
 }
