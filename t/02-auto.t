@@ -389,7 +389,7 @@ subtest $_->{test_name} => sub
                 ),
             }),
         }),
-        "plugin metadata contains auto-computed value ($config->{x_static_install}), including dumped configs",
+        "metadata contains auto-computed value ($config->{x_static_install}), and dumped configs",
     ) or diag 'got distmeta: ', explain $tzil->distmeta;
 
     cmp_deeply(

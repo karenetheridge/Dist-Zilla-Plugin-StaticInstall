@@ -5,6 +5,8 @@ Revision history for Dist-Zilla-Plugin-StaticInstall
           - also check for .PL, .pmc files
           - skip test for build scenario that can only exist from Dist::Zilla
             5.022 and later
+          - expand upon the documentation and add a much more strongly-worded
+            warning against this plugin's use (RT#105847)
 
 0.003     2015-07-14 03:24:15Z
           - cooperate with [ModuleBuildTiny]'s static = auto feature

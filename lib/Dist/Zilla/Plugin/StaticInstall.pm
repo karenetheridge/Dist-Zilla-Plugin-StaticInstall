@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 package Dist::Zilla::Plugin::StaticInstall;
-# ABSTRACT: Identify a distribution as eligible for static installation
+# ABSTRACT: (EXPERIMENTAL, DANGEROUS) Identify a distribution as eligible for static installation
 # KEYWORDS: distribution metadata toolchain static dynamic installation
 # vim: set ts=8 sts=4 sw=4 tw=115 et :
 
@@ -188,6 +188,10 @@ In your F<dist.ini>:
     [StaticInstall]
     mode = on
 
+    ; trust us to set the right value (DANGER!)
+    [StaticInstall]
+    mode = auto
+
     ; be conservative; just tell us what the value should be
     [StaticInstall]
     mode = auto
@@ -199,8 +203,16 @@ This is a L<Dist::Zilla> plugin that, when C<mode> is C<on>, provides the follow
 
     x_static_install : "1"
 
-The definition of a "static installation" is still being refined by the Perl
-Toolchain Gang. Use with discretion!
+The plugin performs a number of checks against the distribution to determine
+the proper value of the C<x_static_install> metadata field. When set to a true
+value, this indicates that the can skip a number of installation steps
+(such as running F<Makefile.PL> or F<Build.PL> and acting on its side effects).
+
+The definition of a "static installation" is being prototyped by the Perl
+Toolchain Gang and is still being refined.  B<DO NOT USE THIS PLUGIN> if you
+are not involved in this testing. The proper installation of the built
+distribution cannot be guaranteed if installed with a static install-enabled
+client.
 
 The current preconditions for C<x_static_install> being true include:
 
