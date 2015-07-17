@@ -135,6 +135,7 @@ my @tests = (
         ],
     },
     {
+        # this also catches the case of a plugin munging a file in the installer phase
         test_name => 'foreign install tools',
         zilla_config_pre => [
             [ '=MyOtherInstallTool' ],
@@ -151,7 +152,7 @@ my @tests = (
         ],
     },
     {
-        test_name => 'install file munged',
+        test_name => 'install file munged (munging phase)',
         zilla_config_pre => [
             [ MakeMaker => ],
             [ '=MyMunger' => ],
