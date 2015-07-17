@@ -43,7 +43,7 @@ cmp_deeply(
         'checking META.json',
         'mode = on but this distribution is ineligible: META.json is not being added to the distribution',
     ),
-    'appropriate logging for static distribution, dry run',
+    'appropriate logging for static distribution',
 );
 
 diag 'got log messages: ', explain $tzil->log_messages
