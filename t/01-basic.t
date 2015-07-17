@@ -8,7 +8,7 @@ use Test::Deep;
 use Test::Fatal;
 use Path::Tiny;
 
-foreach my $static (0,1)
+foreach my $input (0, 'off', 1, 'on')
 {
     my $tzil = Builder->from_config(
         { dist_root => 'does-not-exist' },
@@ -19,7 +19,7 @@ foreach my $static (0,1)
                     [ MetaConfig => ],
                     [ MakeMaker => ],
                     [ MetaJSON => ],
-                    [ 'StaticInstall' => { mode => $static } ],
+                    [ 'StaticInstall' => { mode => $input } ],
                 ),
                 path(qw(source lib Foo.pm)) => "package Foo;\n1;\n",
             },
@@ -33,17 +33,25 @@ foreach my $static (0,1)
         'build proceeds normally',
     );
 
+    my $mode = ($input eq 'on' || $input eq 1) ? 'on'
+             : ($input eq 'off' || $input eq 0) ? 'off'
+             : die "unrecognized input '$input'";
+
+    my $flag = ($input eq 'on' || $input eq 1) ? 1
+             : ($input eq 'off' || $input eq 0) ? 0
+             : die "unrecognized input '$input'";
+
     cmp_deeply(
         $tzil->distmeta,
         superhashof({
-            x_static_install => $static,
+            x_static_install => $flag,
             x_Dist_Zilla => superhashof({
                 plugins => supersetof(
                     {
                         class => 'Dist::Zilla::Plugin::StaticInstall',
                         config => {
                             'Dist::Zilla::Plugin::StaticInstall' => {
-                                mode => ($static ? 'on' : 'off'),
+                                mode => $mode,
                                 dry_run => 0,
                             },
                         },
@@ -53,7 +61,7 @@ foreach my $static (0,1)
                 ),
             }),
         }),
-        'plugin metadata contains pre-selected value, including dumped configs',
+        "given input of $input, passed mode = $mode and got x_static_install = $flag",
     ) or diag 'got distmeta: ', explain $tzil->distmeta;
 
     diag 'got log messages: ', explain $tzil->log_messages
