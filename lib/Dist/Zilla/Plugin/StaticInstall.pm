@@ -54,8 +54,13 @@ sub metadata
 {
     my $self = shift;
     my $mode = $self->mode;
-    return +{ x_static_install => 0 } if $mode eq 'off';
-    return +{ x_static_install => 1 } if $mode eq 'on';
+
+    my $value = $mode eq 'on' ? 1 : $mode eq 'off' ? 0 : undef;
+    if (defined $value)
+    {
+        $self->log([ 'setting x_static_install to %s', $value ]);
+        return +{ x_static_install => $value };
+    }
 
     # if mode = auto and dry_run = 0, we'll add it later
     return +{};
@@ -68,6 +73,8 @@ sub setup_installer
     # even if mode = off or on, we still run all the heuristics, as an extra check.
     my ($value, $message) = $self->_heuristics;
 
+    my $distmeta = $self->zilla->distmeta;
+
     if ($self->mode eq 'on' and not $value)
     {
         $self->log_fatal(ref $message
@@ -76,16 +83,17 @@ sub setup_installer
         );
     }
 
-    # be noisy if requested, or if we aren't enabling the flag but we could be
-    my $log = $self->dry_run || ($self->mode eq 'off' && $value) ? 'log' : 'log_debug';
+    $self->${ \ ($self->dry_run ? 'log' : 'log_debug') }($message) if $message;
 
-    $self->$log($message) if $message;
+    # say what we would do, if dry run or heuristic different than requested
+    $self->log([ 'would set x_static_install to %s', $value ])
+        if $self->dry_run or ($value and $self->mode eq 'off');
 
-    $self->$log([ '%s x_static_install to %s',
-            ($self->mode ne 'auto' or $self->dry_run) ? 'would set' : 'setting',
-            $value ]);
-
-    $self->zilla->distmeta->{x_static_install} = $value if $self->mode eq 'auto' and not $self->dry_run;
+    if (not exists $distmeta->{x_static_install} and $self->mode eq 'auto' and not $self->dry_run)
+    {
+        $self->log([ 'setting x_static_install to %s', $value ]);
+        $distmeta->{x_static_install} = $value;
+    }
 }
 
 # returns value, log message

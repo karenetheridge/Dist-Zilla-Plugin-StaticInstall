@@ -26,7 +26,8 @@ foreach my $input (0, 'off', 1, 'on')
         },
     );
 
-    $tzil->chrome->logger->set_debug(1);
+    # intentionally not setting logging to verbose mode
+
     is(
         exception { $tzil->build },
         undef,
@@ -63,6 +64,12 @@ foreach my $input (0, 'off', 1, 'on')
         }),
         "given input of $input, passed mode = $mode and got x_static_install = $flag",
     ) or diag 'got distmeta: ', explain $tzil->distmeta;
+
+    cmp_deeply(
+        $tzil->log_messages,
+        supersetof("[StaticInstall] setting x_static_install to $flag"),
+        'logged the flag value',
+    );
 
     diag 'got log messages: ', explain $tzil->log_messages
         if not Test::Builder->new->is_passing;

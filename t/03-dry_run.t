@@ -24,7 +24,8 @@ my $tzil = Builder->from_config(
     },
 );
 
-$tzil->chrome->logger->set_debug(1);
+# intentionally not setting logging to verbose mode
+
 is(
     exception { $tzil->build },
     undef,
