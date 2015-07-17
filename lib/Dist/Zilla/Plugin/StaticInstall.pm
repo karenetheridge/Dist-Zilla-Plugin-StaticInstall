@@ -14,7 +14,7 @@ with 'Dist::Zilla::Role::MetaProvider',
 use Moose::Util::TypeConstraints;
 use MooseX::Types::Moose qw(Str Bool);
 use Scalar::Util 'blessed';
-use List::Util 'first';
+use List::Util 1.33 qw(first any);
 use namespace::autoclean;
 
 my $mode_type = enum([qw(off on auto)]);
@@ -143,6 +143,8 @@ sub _heuristics
                 if $added_by =~ /from coderef added by/
                     or $added_by =~ /filename set by/
                     or ($added_by =~ /content set by .* \((.*) line \d+\)/
+                        and not ($1 eq 'Dist::Zilla::Plugin::MakeMaker::Awesome'
+                                 and any { blessed($_) eq 'Dist::Zilla::Plugin::MakeMaker::Fallback' } @installers)
                         and $1 !~ /Dist::Zilla::Plugin::(MakeMaker|ModuleBuildTiny)(::Fallback)?$/);
         }
     }

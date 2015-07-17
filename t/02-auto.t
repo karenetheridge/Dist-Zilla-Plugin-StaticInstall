@@ -369,6 +369,27 @@ my @tests = (
             'setting x_static_install to 1',
         ],
     },
+    {
+        test_name => 'static distribution, [MakeMaker::Fallback] and [ModuleBuildTiny]',
+        zilla_config_pre => [
+            [ 'MakeMaker::Fallback' => ],
+            [ ModuleBuildTiny => ], # see other test files for use of 'static' config option
+            [ MetaJSON => ],
+        ],
+        x_static_install => 1,
+        messages => [
+            'checking dynamic_config',
+            'checking configure prereqs',
+            'checking build prereqs',
+            'checking sharedirs',
+            'checking installer plugins',
+            'checking for munging of Makefile.PL',
+            'checking META.json',
+            'checking for .xs files',
+            'checking .pm, .pod, .pl files',
+            'setting x_static_install to 1',
+        ],
+    },
 );
 
 subtest $_->{test_name} => sub
@@ -379,7 +400,7 @@ subtest $_->{test_name} => sub
         if eq_deeply($config->{zilla_config_pre}, supersetof(supersetof('=MyMunger')))
             and not Dist::Zilla::Plugin::MakeMaker->does('Dist::Zilla::Role::FileGatherer');
 
-    foreach my $plugin (qw(ModuleBuildTiny ModuleBuildTiny::Fallback))
+    foreach my $plugin (qw(ModuleBuildTiny ModuleBuildTiny::Fallback MakeMaker::Fallback))
     {
         plan skip_all => "[$plugin] is not installed"
             if eq_deeply($config->{zilla_config_pre}, supersetof(supersetof($plugin)))
