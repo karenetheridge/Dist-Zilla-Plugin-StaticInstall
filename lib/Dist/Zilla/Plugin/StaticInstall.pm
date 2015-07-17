@@ -75,12 +75,17 @@ sub setup_installer
 
     my $distmeta = $self->zilla->distmeta;
 
-    if ($self->mode eq 'on' and not $value)
+    if ($self->mode ne 'off' and exists $distmeta->{x_static_install} and ($distmeta->{x_static_install} xor $value))
     {
-        $self->log_fatal(ref $message
-            ? [ 'mode = on but this distribution is ineligible: ' . $message->[0], splice(@$message, 1) ]
-            : 'mode = on but this distribution is ineligible: ' . $message
-        );
+        $self->log_fatal('something set x_static_install = 0 but we want to set it to 1') if $value;
+
+        my $str1 = $self->mode eq 'on' ? 'mode = on' : 'x_static_install was set';
+        $message = [ $message ] if not ref $message;
+
+        $self->log_fatal([
+            $str1 . ' but this distribution is ineligible: ' . $message->[0],
+            splice(@$message, 1)
+        ]);
     }
 
     $self->${ \ ($self->dry_run ? 'log' : 'log_debug') }($message) if $message;
