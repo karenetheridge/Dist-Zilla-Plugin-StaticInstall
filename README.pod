@@ -8,7 +8,7 @@ Dist::Zilla::Plugin::StaticInstall - (EXPERIMENTAL, DANGEROUS) Identify a distri
 
 =head1 VERSION
 
-version 0.004
+version 0.005
 
 =head1 SYNOPSIS
 
@@ -46,6 +46,8 @@ client.
 
 The current preconditions for C<x_static_install> being true include:
 
+=for stopwords sharedir
+
 =over 4
 
 =item *
@@ -59,6 +61,10 @@ no prerequisites in configure-requires other than L<ExtUtils::MakeMaker>, L<Modu
 =item *
 
 no prerequisites in build-requires
+
+=item *
+
+no L<module sharedir|Dist::Zilla::Plugin::ModuleShareDirs> (a L<distribution sharedir|Dist::Zilla::Plugin::ShareDir> is okay)
 
 =item *
 

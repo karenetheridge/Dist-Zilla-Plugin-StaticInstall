@@ -1,6 +1,6 @@
 Revision history for Dist-Zilla-Plugin-StaticInstall
 
-{{$NEXT}}
+0.005     2015-07-18 03:05:42Z
           - fix usage with [MakeMaker::Fallback]
           - improved diagnostic messages
           - lots more tests!
