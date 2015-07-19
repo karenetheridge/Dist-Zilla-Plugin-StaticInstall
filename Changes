@@ -1,5 +1,7 @@
 Revision history for Dist-Zilla-Plugin-StaticInstall
 
+{{$NEXT}}
+
 0.006     2015-07-19 05:24:25Z
           - fix test that breaks with older Dist::Zilla that did not use
             CPAN::Meta::Merge to merge metadata snippets
