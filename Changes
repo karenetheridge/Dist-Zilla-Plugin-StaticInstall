@@ -1,6 +1,8 @@
 Revision history for Dist-Zilla-Plugin-StaticInstall
 
 {{$NEXT}}
+          - fix test that breaks with older Dist::Zilla that did not use
+            CPAN::Meta::Merge to merge metadata snippets
 
 0.005     2015-07-18 03:05:42Z
           - fix usage with [MakeMaker::Fallback]
