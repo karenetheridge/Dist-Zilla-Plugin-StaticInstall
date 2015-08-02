@@ -1,5 +1,7 @@
 Revision history for Dist-Zilla-Plugin-StaticInstall
 
+{{$NEXT}}
+
 0.008     2015-08-02 02:06:32Z
           - avoids autovivifying prereqs and other metadata while inspecting
             it (fixes empty {prereqs}{build}{requires} showing up in META.*)
