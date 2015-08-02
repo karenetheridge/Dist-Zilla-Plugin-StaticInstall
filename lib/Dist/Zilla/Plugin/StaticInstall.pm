@@ -235,9 +235,11 @@ The current preconditions for C<x_static_install> being true include:
 =begin :list
 
 * C<dynamic_config> must be false in metadata
-* no prerequisites in configure-requires other than L<ExtUtils::MakeMaker>, L<Module::Build::Tiny>, or L<File::ShareDir::Install>
+* no prerequisites in configure-requires other than L<ExtUtils::MakeMaker>,
+  L<Module::Build::Tiny>, or L<File::ShareDir::Install>
 * no prerequisites in build-requires
-* no L<module sharedir|Dist::Zilla::Plugin::ModuleShareDirs> (a L<distribution sharedir|Dist::Zilla::Plugin::ShareDir> is okay)
+* no L<module sharedir|Dist::Zilla::Plugin::ModuleShareDirs> (a L<distribution
+  sharedir|Dist::Zilla::Plugin::ShareDir> is okay)
 * no installer plugins permitted other than:
 
 =for :list
@@ -246,11 +248,15 @@ The current preconditions for C<x_static_install> being true include:
 * L<Dist::Zilla::Plugin::ModuleBuildTiny>
 * L<Dist::Zilla::Plugin::ModuleBuildTiny::Fallback>
 
-* an installer plugin from the above list B<must> be used (a manually-generated F<Makefile.PL> or F<Build.PL> is not permitted)
+* an installer plugin from the above list B<must> be used (a
+  manually-generated F<Makefile.PL> or F<Build.PL> is not permitted)
 * no other plugins may modify F<Makefile.PL> nor F<Build.PL>
-* the L<C<[MetaJSON]>|Dist::Zilla::Plugin::MetaJSON> plugin must be used, at (the default) meta-spec version 2
+* the L<C<[MetaJSON]>|Dist::Zilla::Plugin::MetaJSON> plugin must be used, at
+  (the default) meta-spec version 2
 * no F<.xs> files may be present
-* F<.pm>, F<.pod>, F<.pl> files may not be present in the root of the distribution or in C<BASEEXT> (where C<BASEEXT> is the last component of the distribution name)
+* F<.pm>, F<.pod>, F<.pl> files may not be present in the root of the
+  distribution or in C<BASEEXT> (where C<BASEEXT> is the last component of the
+  distribution name)
 * F<.pmc> and F<.PL> files (excluding F<Makefile.PL>, F<Build.PL>) may not be present
 
 =end :list
