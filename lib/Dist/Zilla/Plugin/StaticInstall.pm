@@ -15,6 +15,7 @@ use Moose::Util::TypeConstraints;
 use MooseX::Types::Moose qw(Str Bool);
 use Scalar::Util 'blessed';
 use List::Util 1.33 qw(first any);
+no autovivification;
 use namespace::autoclean;
 
 my $mode_type = enum([qw(off on auto)]);

@@ -45,6 +45,10 @@ foreach my $input (0, 'off', 1, 'on')
     cmp_deeply(
         $tzil->distmeta,
         superhashof({
+            # TODO: replace with Test::Deep::notexists($key)
+            prereqs => code(sub {
+                !exists $_[0]->{build} ? 1 : (0, 'build exists');
+            }),
             x_static_install => $flag,
             x_Dist_Zilla => superhashof({
                 plugins => supersetof(
