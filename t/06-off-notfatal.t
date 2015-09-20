@@ -7,6 +7,7 @@ use Test::DZil;
 use Test::Deep;
 use Test::Fatal;
 use Path::Tiny;
+use Term::ANSIColor 2.01 'colorstrip';
 
 my $tzil = Builder->from_config(
     { dist_root => 'does-not-exist' },
@@ -55,7 +56,7 @@ cmp_deeply(
 ) or diag 'got distmeta: ', explain $tzil->distmeta;
 
 cmp_deeply(
-    $tzil->log_messages,
+    [ map { colorstrip($_) } @{ $tzil->log_messages } ],
     supersetof(map { '[StaticInstall] ' . $_ }
         'checking dynamic_config',
         'checking configure prereqs',

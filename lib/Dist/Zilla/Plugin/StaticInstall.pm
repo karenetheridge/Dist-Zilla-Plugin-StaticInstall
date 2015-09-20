@@ -16,6 +16,7 @@ use MooseX::Types::Moose qw(Str Bool);
 use Scalar::Util 'blessed';
 use List::Util 1.33 qw(first any);
 no autovivification;
+use Term::ANSIColor 3.00 'colored';
 use namespace::autoclean;
 
 my $mode_type = enum([qw(off on auto)]);
@@ -93,7 +94,7 @@ sub setup_installer
     $self->${ \ ($self->dry_run ? 'log' : 'log_debug') }($message) if $message;
 
     # say what we would do, if dry run or heuristic different than requested
-    $self->log([ 'would set x_static_install to %s', $value ])
+    $self->log([ colored('would set x_static_install to %s', 'yellow'), $value ])
         if $self->dry_run or ($value and $self->mode eq 'off');
 
     if (not exists $distmeta->{x_static_install} and $self->mode eq 'auto' and not $self->dry_run)
