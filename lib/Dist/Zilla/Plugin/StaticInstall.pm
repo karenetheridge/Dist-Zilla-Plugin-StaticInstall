@@ -39,6 +39,7 @@ around dump_config => sub
     $config->{+__PACKAGE__} = {
         mode => $self->mode,
         dry_run => $self->dry_run ? 1 : 0,
+        blessed($self) ne __PACKAGE__ ? ( version => $VERSION ) : (),
     };
 
     return $config;
