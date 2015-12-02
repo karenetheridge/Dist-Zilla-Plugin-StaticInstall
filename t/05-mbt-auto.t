@@ -4,7 +4,7 @@ use warnings;
 use Test::More;
 use if $ENV{AUTHOR_TESTING}, 'Test::Warnings';
 use Test::DZil;
-use Test::Deep;
+use Test::Deep '!none';
 use Test::Fatal;
 use Path::Tiny;
 
