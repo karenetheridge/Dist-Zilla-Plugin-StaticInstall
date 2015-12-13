@@ -7,6 +7,7 @@ use Test::DZil;
 use Test::Deep;
 use Test::Fatal;
 use Path::Tiny;
+use Term::ANSIColor 2.01 'colorstrip';
 
 {
     package MyMetadata;
@@ -90,6 +91,41 @@ my @tests = (
         ],
     },
     {
+        test_name => 'execdir outside of script/',
+        zilla_config_pre => [
+            [ MakeMaker => ],
+            [ ExecDir => ],
+        ],
+        zilla_files => [
+            path(qw(source bin hello-world)) => qq{#!/usr/bin/perl\nprint "hello world!\\xa\n"},
+        ],
+        x_static_install => 0,
+        messages => [
+            'checking dynamic_config',
+            'checking configure prereqs',
+            'checking build prereqs',
+            'checking execdirs',
+            'found ineligible executable dir \'bin\'',
+            'setting x_static_install to 0',
+        ],
+    },
+    {
+        test_name => 'execdir outside of script/, but not used',
+        zilla_config_pre => [
+            [ MakeMaker => ],
+            [ ExecDir => ],
+        ],
+        x_static_install => 0,
+        messages => [
+            'checking dynamic_config',
+            'checking configure prereqs',
+            'checking build prereqs',
+            'checking execdirs',
+            'found ineligible executable dir \'bin\' configured: better to avoid',
+            'setting x_static_install to 0',
+        ],
+    },
+    {
         test_name => 'module sharedir',
         zilla_config_pre => [
             [ MakeMaker => ],
@@ -100,6 +136,7 @@ my @tests = (
             'checking dynamic_config',
             'checking configure prereqs',
             'checking build prereqs',
+            'checking execdirs',
             'checking sharedirs',
             'found module sharedir for Foo::Bar',
             'setting x_static_install to 0',
@@ -115,6 +152,7 @@ my @tests = (
             'checking dynamic_config',
             'checking configure prereqs',
             'checking build prereqs',
+            'checking execdirs',
             'checking sharedirs',
             'checking installer plugins',
             'this plugin must be after Dist::Zilla::Plugin::MakeMaker',
@@ -128,6 +166,7 @@ my @tests = (
             'checking dynamic_config',
             'checking configure prereqs',
             'checking build prereqs',
+            'checking execdirs',
             'checking sharedirs',
             'checking installer plugins',
             'a recognized installer plugin must be used',
@@ -145,6 +184,7 @@ my @tests = (
             'checking dynamic_config',
             'checking configure prereqs',
             'checking build prereqs',
+            'checking execdirs',
             'checking sharedirs',
             'checking installer plugins',
             'found install tool MyOtherInstallTool that will add extra content to Makefile.PL, Build.PL',
@@ -162,6 +202,7 @@ my @tests = (
             'checking dynamic_config',
             'checking configure prereqs',
             'checking build prereqs',
+            'checking execdirs',
             'checking sharedirs',
             'checking installer plugins',
             'checking for munging of Makefile.PL',
@@ -179,6 +220,7 @@ my @tests = (
             'checking dynamic_config',
             'checking configure prereqs',
             'checking build prereqs',
+            'checking execdirs',
             'checking sharedirs',
             'checking installer plugins',
             'checking for munging of Makefile.PL',
@@ -198,6 +240,7 @@ my @tests = (
             'checking dynamic_config',
             'checking configure prereqs',
             'checking build prereqs',
+            'checking execdirs',
             'checking sharedirs',
             'checking installer plugins',
             'checking for munging of Makefile.PL',
@@ -220,6 +263,7 @@ my @tests = (
             'checking dynamic_config',
             'checking configure prereqs',
             'checking build prereqs',
+            'checking execdirs',
             'checking sharedirs',
             'checking installer plugins',
             'checking for munging of Makefile.PL',
@@ -246,6 +290,7 @@ my @tests = (
             'checking dynamic_config',
             'checking configure prereqs',
             'checking build prereqs',
+            'checking execdirs',
             'checking sharedirs',
             'checking installer plugins',
             'checking for munging of Makefile.PL',
@@ -273,6 +318,7 @@ my @tests = (
             'checking dynamic_config',
             'checking configure prereqs',
             'checking build prereqs',
+            'checking execdirs',
             'checking sharedirs',
             'checking installer plugins',
             'checking for munging of Makefile.PL',
@@ -298,6 +344,7 @@ my @tests = (
             'checking dynamic_config',
             'checking configure prereqs',
             'checking build prereqs',
+            'checking execdirs',
             'checking sharedirs',
             'checking installer plugins',
             'checking for munging of Makefile.PL',
@@ -320,6 +367,7 @@ my @tests = (
             'checking dynamic_config',
             'checking configure prereqs',
             'checking build prereqs',
+            'checking execdirs',
             'checking sharedirs',
             'checking installer plugins',
             'checking for munging of Makefile.PL',
@@ -340,6 +388,7 @@ my @tests = (
             'checking dynamic_config',
             'checking configure prereqs',
             'checking build prereqs',
+            'checking execdirs',
             'checking sharedirs',
             'checking installer plugins',
             'checking for munging of Build.PL',
@@ -360,6 +409,7 @@ my @tests = (
             'checking dynamic_config',
             'checking configure prereqs',
             'checking build prereqs',
+            'checking execdirs',
             'checking sharedirs',
             'checking installer plugins',
             'checking for munging of Build.PL',
@@ -381,6 +431,7 @@ my @tests = (
             'checking dynamic_config',
             'checking configure prereqs',
             'checking build prereqs',
+            'checking execdirs',
             'checking sharedirs',
             'checking installer plugins',
             'checking for munging of Makefile.PL',
@@ -462,7 +513,7 @@ subtest $_->{test_name} => sub
     ) or diag 'got distmeta: ', explain $tzil->distmeta;
 
     cmp_deeply(
-        $tzil->log_messages,
+        [ map { colorstrip($_) } @{ $tzil->log_messages } ],
         supersetof(map { s/__MUNGE_LINE__/$munge_line/; '[StaticInstall] ' . $_ } @{ $config->{messages} }),
         $config->{test_name},
     );

@@ -3,6 +3,7 @@ Revision history for Dist-Zilla-Plugin-StaticInstall
 {{$NEXT}}
           - avoid importing Test::Deep::none, to avoid clashing with
           List::Util
+          - also check for executable files outside of script/ (see #110299)
 
 0.008     2015-08-02 02:06:32Z
           - avoids autovivifying prereqs and other metadata while inspecting

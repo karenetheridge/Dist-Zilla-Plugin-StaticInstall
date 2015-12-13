@@ -17,6 +17,7 @@ use Scalar::Util 'blessed';
 use List::Util 1.33 qw(first any);
 no autovivification;
 use Term::ANSIColor 3.00 'colored';
+use Path::Tiny;
 use namespace::autoclean;
 
 my $mode_type = enum([qw(off on auto)]);
@@ -127,6 +128,31 @@ sub _heuristics
     return (0, [ 'found build prereq%s %s',
             @build_requires > 1 ? 's' : '',
             join(', ', sort @build_requires) ]) if @build_requires;
+
+    $self->$log('checking execdirs');
+    if (my @execfiles_plugins = @{ $self->zilla->plugins_with(-ExecFiles) })
+    {
+        my @bad_unempty_execdirs =
+            map { m{^([^/]+)/}g }
+            grep { path($_) !~ m{^script/} }
+            map { $_->name }
+            map {; @{ $_->find_files } }
+            @execfiles_plugins;
+
+        return (0, [ 'found ineligible executable dir%s \'%s\'',
+                (@bad_unempty_execdirs == 1 ? '' : 's'), join(', ', @bad_unempty_execdirs) ])
+            if @bad_unempty_execdirs;
+
+        if (my @bad_execdirs =
+                grep { $_ ne 'script' }
+                map { $_->dir }
+                grep { $_->isa('Dist::Zilla::Plugin::ExecDir') }
+                @execfiles_plugins)
+        {
+            $self->log([ colored('found ineligible executable dir%s \'%s\' configured: better to avoid', 'yellow'),
+                (@bad_execdirs == 1 ? '' : 's'), join(', ', @bad_execdirs) ]);
+        }
+    }
 
     $self->$log('checking sharedirs');
     my @module_sharedirs = keys %{ $self->zilla->_share_dir_map->{module} };
@@ -241,6 +267,8 @@ The current preconditions for C<x_static_install> being true include:
 * no prerequisites in configure-requires other than L<ExtUtils::MakeMaker>,
   L<Module::Build::Tiny>, or L<File::ShareDir::Install>
 * no prerequisites in build-requires
+* no L<files to be installed as executables|Dist::Zilla::Plugin::ExecDir>
+  outside of the F<script> directory
 * no L<module sharedir|Dist::Zilla::Plugin::ModuleShareDirs> (a L<distribution
   sharedir|Dist::Zilla::Plugin::ShareDir> is okay)
 * no installer plugins permitted other than:
