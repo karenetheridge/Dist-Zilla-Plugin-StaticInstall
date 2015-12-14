@@ -1,5 +1,7 @@
 Revision history for Dist-Zilla-Plugin-StaticInstall
 
+{{$NEXT}}
+
 0.009     2015-12-14 02:38:48Z
           - avoid importing Test::Deep::none, to avoid clashing with
           List::Util
