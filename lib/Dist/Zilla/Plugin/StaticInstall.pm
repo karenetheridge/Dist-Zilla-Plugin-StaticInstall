@@ -257,7 +257,10 @@ are not involved in this testing. The proper installation of the built
 distribution cannot be guaranteed if installed with a static install-enabled
 client.
 
-The current preconditions for C<x_static_install> being true include:
+The tentative specification is spelled out in more detail in
+L<https://github.com/Leont/cpan-static/blob/master/lib/CPAN/Static/Spec.pm>.
+
+This plugin currently checks these conditions (if all are true, C<x_static_install> can be true):
 
 =for stopwords sharedir
 
@@ -324,5 +327,6 @@ can see what the value would have been.
 
 =for :list
 * L<CPAN::Meta::Spec>
+* L<CPAN::Static::Spec|https://github.com/Leont/cpan-static>.
 
 =cut
