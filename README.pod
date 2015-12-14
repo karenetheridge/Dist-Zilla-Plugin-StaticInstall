@@ -8,7 +8,7 @@ Dist::Zilla::Plugin::StaticInstall - (EXPERIMENTAL, DANGEROUS) Identify a distri
 
 =head1 VERSION
 
-version 0.008
+version 0.009
 
 =head1 SYNOPSIS
 
@@ -44,7 +44,10 @@ are not involved in this testing. The proper installation of the built
 distribution cannot be guaranteed if installed with a static install-enabled
 client.
 
-The current preconditions for C<x_static_install> being true include:
+The tentative specification is spelled out in more detail in
+L<https://github.com/Leont/cpan-static/blob/master/lib/CPAN/Static/Spec.pm>.
+
+This plugin currently checks these conditions (if all are true, C<x_static_install> can be true):
 
 =for stopwords sharedir
 
@@ -61,6 +64,10 @@ no prerequisites in configure-requires other than L<ExtUtils::MakeMaker>, L<Modu
 =item *
 
 no prerequisites in build-requires
+
+=item *
+
+no L<files to be installed as executables|Dist::Zilla::Plugin::ExecDir> outside of the F<script> directory
 
 =item *
 
@@ -144,14 +151,6 @@ can see what the value would have been.
 
 =for Pod::Coverage BUILD metadata setup_installer
 
-=head1 SUPPORT
-
-=for stopwords irc
-
-Bugs may be submitted through L<the RT bug tracker|https://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-Plugin-StaticInstall>
-(or L<bug-Dist-Zilla-Plugin-StaticInstall@rt.cpan.org|mailto:bug-Dist-Zilla-Plugin-StaticInstall@rt.cpan.org>).
-I am also usually active on irc, as 'ether' at C<irc.perl.org>.
-
 =head1 SEE ALSO
 
 =over 4
@@ -160,13 +159,30 @@ I am also usually active on irc, as 'ether' at C<irc.perl.org>.
 
 L<CPAN::Meta::Spec>
 
+=item *
+
+L<CPAN::Static::Spec|https://github.com/Leont/cpan-static>.
+
 =back
+
+=head1 SUPPORT
+
+Bugs may be submitted through L<the RT bug tracker|https://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-Plugin-StaticInstall>
+(or L<bug-Dist-Zilla-Plugin-StaticInstall@rt.cpan.org|mailto:bug-Dist-Zilla-Plugin-StaticInstall@rt.cpan.org>).
+
+There is also a mailing list available for users of this distribution, at
+L<http://dzil.org/#mailing-list>.
+
+There is also an irc channel available for users of this distribution, at
+L<irc://irc.perl.org/#distzilla>.
+
+I am also usually active on irc, as 'ether' at C<irc.perl.org>.
 
 =head1 AUTHOR
 
 Karen Etheridge <ether@cpan.org>
 
-=head1 COPYRIGHT AND LICENSE
+=head1 COPYRIGHT AND LICENCE
 
 This software is copyright (c) 2015 by Karen Etheridge.
 
