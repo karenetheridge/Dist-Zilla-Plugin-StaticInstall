@@ -194,7 +194,7 @@ sub _heuristics
     $self->$log('checking META.json');
     my $metajson = first { blessed($_) eq 'Dist::Zilla::Plugin::MetaJSON' } @{ $self->zilla->plugins };
     return (0, 'META.json is not being added to the distribution') if not $metajson;
-    return (0, [ 'META.json is using meta-spec version %s', $metajson->version ]) if $metajson->version ne '2';
+    return (0, [ 'META.json is using meta-spec version %s', $metajson->version ]) if $metajson->version < '2';
 
     my @filenames = map { $_->name } @{ $self->zilla->files };
 
