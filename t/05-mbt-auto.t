@@ -8,7 +8,7 @@ use Test::Deep '!none';
 use Test::Fatal;
 use Path::Tiny;
 
-use Test::Requires { 'Dist::Zilla::Plugin::ModuleBuildTiny' => '0.011' };
+use Test::Needs { 'Dist::Zilla::Plugin::ModuleBuildTiny' => '0.011' };
 
 my $tzil = Builder->from_config(
     { dist_root => 'does-not-exist' },

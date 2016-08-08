@@ -10,7 +10,7 @@ use Path::Tiny;
 
 # before this revision, distmeta was merged with Hash::Meta::Merge which did
 # not croak on conflicting hash values
-use Test::Requires { 'Dist::Zilla' => '5.022' };
+use Test::Needs { 'Dist::Zilla' => '5.022' };
 
 use lib 't/lib';
 
