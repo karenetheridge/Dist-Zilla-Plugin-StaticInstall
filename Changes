@@ -1,6 +1,8 @@
 Revision history for Dist-Zilla-Plugin-StaticInstall
 
 {{$NEXT}}
+          - fix test that uses a [MetaJSON] config option that has been
+            discontinued in Dist::Zilla 6.007
 
 0.009     2015-12-14 02:38:48Z
           - avoid importing Test::Deep::none, to avoid clashing with
