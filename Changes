@@ -4,7 +4,7 @@ Revision history for Dist-Zilla-Plugin-StaticInstall
 
 0.009     2015-12-14 02:38:48Z
           - avoid importing Test::Deep::none, to avoid clashing with
-          List::Util
+            List::Util
           - also check for executable files outside of script/ (see #110299)
           - add documentation reference to CPAN::Static::Spec
 
