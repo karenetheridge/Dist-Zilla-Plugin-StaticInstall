@@ -49,7 +49,7 @@ subtest "preset x_static_install = input of $_->{x_static_install}, our mode = $
     $tzil->chrome->logger->set_debug(1);
 
     my $error = q{Can't merge attribute x_static_install}
-        . (eval { require CPAN::Meta::Merge; CPAN::Meta::Merge->VERSION('2.143240'); 1 }
+        . (eval { +require CPAN::Meta::Merge; CPAN::Meta::Merge->VERSION('2.143240'); 1 }
           ? q{: '} . $config->{x_static_install} . q{' does not equal '} . ($config->{mode} eq 'on' ? 1 : 0) . q{' at }
           : '');
 

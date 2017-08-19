@@ -1,6 +1,7 @@
 Revision history for Dist-Zilla-Plugin-StaticInstall
 
 {{$NEXT}}
+          - fix prereqs for things only used optionally in tests
 
 0.010     2016-08-08 05:20:48Z
           - fix test that uses a [MetaJSON] config option that has been

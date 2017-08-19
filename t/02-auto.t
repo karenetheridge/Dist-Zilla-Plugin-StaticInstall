@@ -460,7 +460,7 @@ subtest $_->{test_name} => sub
 
     plan skip_all => '[MetaJSON] (as of 6.007) is no longer capable of generating files using metaspec version 1.4'
         if eq_deeply($config->{zilla_config_pre}, supersetof([ 'MetaJSON' => { version => '1.4' } ]))
-            and eval { require Dist::Zilla::Plugin::MetaJSON; Dist::Zilla::Plugin::MetaJSON->VERSION('6.007') };
+            and eval { +require Dist::Zilla::Plugin::MetaJSON; Dist::Zilla::Plugin::MetaJSON->VERSION('6.007') };
 
     local $MyMetadata::metadata = $config->{metadata} || {};
     local $MyMetadata::prereqs = $config->{metadata}{prereqs};
