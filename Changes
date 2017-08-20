@@ -1,5 +1,7 @@
 Revision history for Dist-Zilla-Plugin-StaticInstall
 
+{{$NEXT}}
+
 0.011     2017-08-20 01:02:03Z
           - fix prereqs for things only used optionally in tests
 

@@ -5,7 +5,7 @@ package Dist::Zilla::Plugin::StaticInstall;
 # ABSTRACT: (EXPERIMENTAL, DANGEROUS) Identify a distribution as eligible for static installation
 # KEYWORDS: distribution metadata toolchain static dynamic installation
 
-our $VERSION = '0.011';
+our $VERSION = '0.012';
 
 use Moose;
 with 'Dist::Zilla::Role::MetaProvider',
