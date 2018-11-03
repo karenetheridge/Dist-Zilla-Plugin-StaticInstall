@@ -357,6 +357,32 @@ my @tests = (
         ],
     },
     {
+        test_name => 'non-.pm, .pod files in lib/',
+        zilla_config_pre => [
+            [ MakeMaker => ],
+            [ MetaJSON => ],
+        ],
+        zilla_files => [
+            path(qw(source lib extra.dat)) => "I am a data file\n",
+        ],
+        x_static_install => 0,
+        messages => [
+            'checking dynamic_config',
+            'checking configure prereqs',
+            'checking build prereqs',
+            'checking execdirs',
+            'checking sharedirs',
+            'checking installer plugins',
+            'checking for munging of Makefile.PL',
+            'checking META.json',
+            'checking for .xs files',
+            'checking .pm, .pod, .pl files',
+            'checking for .PL, .pmc files',
+            'found non-installable file lib/extra.dat',
+            'setting x_static_install to 0',
+        ],
+    },
+    {
         test_name => 'static distribution, [MakeMaker]',
         zilla_config_pre => [
             [ MakeMaker => ],

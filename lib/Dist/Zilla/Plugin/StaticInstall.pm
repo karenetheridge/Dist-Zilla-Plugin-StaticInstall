@@ -216,6 +216,11 @@ sub _heuristics
     my @PL_files = grep { !/^(Makefile|Build)\.PL$/ and /\.(PL|pmc)$/ } @filenames;
     return (0, [ 'found %s', join(', ', sort @PL_files) ]) if @PL_files;
 
+    $self->$log('checking for extra files in lib/');
+    # TODO: what about .pl?
+    my @non_pm_pod_files = grep { !m{\.(?:pm|pod)$} } grep { m{^lib/} } @filenames;
+    return (0, [ 'found non-installable file%s %s', @non_pm_pod_files > 1 ? 's' : '', join(', ', sort @non_pm_pod_files) ]) if @non_pm_pod_files;
+
     return 1;
 }
 
@@ -293,6 +298,7 @@ This plugin currently checks these conditions (if all are true, C<x_static_insta
   distribution or in C<BASEEXT> (where C<BASEEXT> is the last component of the
   distribution name)
 * F<.pmc> and F<.PL> files (excluding F<Makefile.PL>, F<Build.PL>) may not be present
+* files in F<lib/> other than F<.pod>, F<.pm> may not be present
 
 =end :list
 
