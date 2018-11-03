@@ -8,6 +8,7 @@ use Test::Deep;
 use Test::Fatal;
 use Path::Tiny;
 use Term::ANSIColor 2.01 'colorstrip';
+use Module::Runtime 'require_module';
 
 {
     package MyMetadata;
