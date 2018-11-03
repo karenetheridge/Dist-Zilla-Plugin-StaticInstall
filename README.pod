@@ -4,11 +4,11 @@
 
 =head1 NAME
 
-Dist::Zilla::Plugin::StaticInstall - (EXPERIMENTAL, DANGEROUS) Identify a distribution as eligible for static installation
+Dist::Zilla::Plugin::StaticInstall - Identify a distribution as eligible for static installation
 
 =head1 VERSION
 
-version 0.011
+version 0.012
 
 =head1 SYNOPSIS
 
@@ -120,6 +120,10 @@ F<.pm>, F<.pod>, F<.pl> files may not be present in the root of the distribution
 =item *
 
 F<.pmc> and F<.PL> files (excluding F<Makefile.PL>, F<Build.PL>) may not be present
+
+=item *
+
+files in F<lib/> other than F<.pod>, F<.pm> may not be present
 
 =back
 
