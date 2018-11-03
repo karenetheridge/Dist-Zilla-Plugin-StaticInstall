@@ -59,6 +59,7 @@ sub metadata
     my $self = shift;
     my $mode = $self->mode;
 
+    # FIXME: is this supposed to be a version?! document that!
     my $value = $mode eq 'on' ? 1 : $mode eq 'off' ? 0 : undef;
     if (defined $value)
     {
