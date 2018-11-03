@@ -131,24 +131,24 @@ sub _heuristics
             join(', ', sort @build_requires) ]) if @build_requires;
 
     $self->$log('checking execdirs');
-    if (my @execfiles_plugins = @{ $self->zilla->plugins_with(-ExecFiles) })
+    if (my $exec_files_plugin = $self->zilla->plugin_named(':ExecFiles'))
     {
         my @bad_unempty_execdirs =
-            map { m{^([^/]+)/}g }
-            grep { path($_) !~ m{^script/} }
-            map { $_->name }
-            map {; @{ $_->find_files } }
-            @execfiles_plugins;
+            grep { $_ ne 'script' }
+            map { (split(/\//, path($_->name)->parent, 2))[0] }
+            @{ $exec_files_plugin->find_files };
 
-        return (0, [ 'found ineligible executable dir%s \'%s\'',
+        return (0, [ 'found ineligible [ExecDir] dir%s \'%s\'',
                 (@bad_unempty_execdirs == 1 ? '' : 's'), join(', ', @bad_unempty_execdirs) ])
             if @bad_unempty_execdirs;
 
+        # this would be a failure if a file actually existed in this dir, but it's empty, so just warn.
         if (my @bad_execdirs =
                 grep { $_ ne 'script' }
                 map { $_->dir }
                 grep { $_->isa('Dist::Zilla::Plugin::ExecDir') }
-                @execfiles_plugins)
+                @{ $self->zilla->plugins_with(-ExecFiles) }
+            )
         {
             $self->log([ colored('found ineligible executable dir%s \'%s\' configured: better to avoid', 'yellow'),
                 (@bad_execdirs == 1 ? '' : 's'), join(', ', @bad_execdirs) ]);

@@ -105,7 +105,7 @@ my @tests = (
             'checking configure prereqs',
             'checking build prereqs',
             'checking execdirs',
-            'found ineligible executable dir \'bin\'',
+            'found ineligible [ExecDir] dir \'bin\'',
             'setting x_static_install to 0',
         ],
     },
