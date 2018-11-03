@@ -161,7 +161,7 @@ sub _heuristics
             join(', ', sort @module_sharedirs) ]) if @module_sharedirs;
 
     $self->$log('checking installer plugins');
-    my @installers = @{ $self->zilla->plugins_with(-InstallTool) };
+    my @installers = grep { not $_->isa('Dist::Zilla::Plugin::VerifyPhases') } @{ $self->zilla->plugins_with(-InstallTool) };
 
     # we need to be last, to see the final copy of the installer files
     return (0, [ 'this plugin must be after %s', blessed($installers[-1]) ]) if $installers[-1] != $self;
