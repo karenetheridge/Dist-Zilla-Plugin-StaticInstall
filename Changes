@@ -1,5 +1,7 @@
 Revision history for Dist-Zilla-Plugin-StaticInstall
 
+{{$NEXT}}
+
 0.012     2018-11-03 17:02:46Z
           - no longer mark this distribution as experimental or DANGEROUS! in
             abstract
