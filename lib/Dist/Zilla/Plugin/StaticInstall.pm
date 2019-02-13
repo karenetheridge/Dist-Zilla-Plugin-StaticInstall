@@ -125,7 +125,7 @@ sub _heuristics
             join(', ', sort keys %extra_configure_requires) ]) if keys %extra_configure_requires;
 
     $self->$log('checking build prereqs');
-    my @build_requires = grep { $_ ne 'perl' } keys %{ $distmeta->{prereqs}{build}{requires} };
+    my @build_requires = grep $_ ne 'perl', keys %{ $distmeta->{prereqs}{build}{requires} };
     return (0, [ 'found build prereq%s %s',
             @build_requires > 1 ? 's' : '',
             join(', ', sort @build_requires) ]) if @build_requires;
@@ -134,8 +134,8 @@ sub _heuristics
     if (my $exec_files_plugin = $self->zilla->plugin_named(':ExecFiles'))
     {
         my @bad_unempty_execdirs =
-            grep { $_ ne 'script' }
-            map { (split(/\//, path($_->name)->parent, 2))[0] }
+            grep $_ ne 'script',
+            map +(split(/\//, path($_->name)->parent, 2))[0],
             @{ $exec_files_plugin->find_files };
 
         return (0, [ 'found ineligible [ExecDir] dir%s \'%s\'',
@@ -144,9 +144,9 @@ sub _heuristics
 
         # this would be a failure if a file actually existed in this dir, but it's empty, so just warn.
         if (my @bad_execdirs =
-                grep { $_ ne 'script' }
-                map { $_->dir }
-                grep { $_->isa('Dist::Zilla::Plugin::ExecDir') }
+                grep $_ ne 'script',
+                map $_->dir,
+                grep $_->isa('Dist::Zilla::Plugin::ExecDir'),
                 @{ $self->zilla->plugins_with(-ExecFiles) }
             )
         {
@@ -162,7 +162,7 @@ sub _heuristics
             join(', ', sort @module_sharedirs) ]) if @module_sharedirs;
 
     $self->$log('checking installer plugins');
-    my @installers = grep { not $_->isa('Dist::Zilla::Plugin::VerifyPhases') } @{ $self->zilla->plugins_with(-InstallTool) };
+    my @installers = grep !$_->isa('Dist::Zilla::Plugin::VerifyPhases'), @{ $self->zilla->plugins_with(-InstallTool) };
 
     # we need to be last, to see the final copy of the installer files
     return (0, [ 'this plugin must be after %s', blessed($installers[-1]) ]) if $installers[-1] != $self;
@@ -170,13 +170,13 @@ sub _heuristics
     return (0, [ 'a recognized installer plugin must be used' ]) if @installers < 2;
 
     # only these installer plugins can be trusted to not add disqualifying content
-    my @other_installers = grep { blessed($_) !~ /^Dist::Zilla::Plugin::((MakeMaker|ModuleBuildTiny)(::Fallback)?|StaticInstall)$/ } @installers;
+    my @other_installers = grep blessed($_) !~ /^Dist::Zilla::Plugin::((MakeMaker|ModuleBuildTiny)(::Fallback)?|StaticInstall)$/, @installers;
     return (0, [ 'found install tool%s %s that will add extra content to Makefile.PL, Build.PL',
             @other_installers > 1 ? 's' : '',
-            join(', ', sort map { blessed($_) } @other_installers) ]) if @other_installers;
+            join(', ', sort map blessed($_), @other_installers) ]) if @other_installers;
 
     # check that no other plugins put their grubby hands on our installer file(s)
-    foreach my $installer_file (grep { $_->name eq 'Makefile.PL' or $_->name eq 'Build.PL' } @{ $self->zilla->files })
+    foreach my $installer_file (grep +($_->name eq 'Makefile.PL' or $_->name eq 'Build.PL'), @{ $self->zilla->files })
     {
         $self->$log([ 'checking for munging of %s', $installer_file->name ]);
 
@@ -197,28 +197,28 @@ sub _heuristics
     return (0, 'META.json is not being added to the distribution') if not $metajson;
     return (0, [ 'META.json is using meta-spec version %s', $metajson->version ]) if $metajson->version < '2';
 
-    my @filenames = map { $_->name } @{ $self->zilla->files };
+    my @filenames = map $_->name, @{ $self->zilla->files };
 
     $self->$log('checking for .xs files');
-    my @xs_files = grep { /\.xs$/ } @filenames;
+    my @xs_files = grep /\.xs$/, @filenames;
     return (0, [ 'found .xs file%s %s', @xs_files > 1 ? 's' : '', join(', ', sort @xs_files) ]) if @xs_files;
 
     my $BASEEXT = (split(/-/, $self->zilla->name))[-1];
 
     $self->$log('checking .pm, .pod, .pl files');
-    my @root_files = grep { m{^[^/]*\.(pm|pl|pod)$} and !m{^lib/} } @filenames;
+    my @root_files = grep +(m{^[^/]*\.(pm|pl|pod)$} and !m{^lib/}), @filenames;
     return (0, [ 'found %s in the root', join(', ', sort @root_files) ]) if @root_files;
 
-    my @baseext_files = $BASEEXT eq 'lib' ? () : grep { m{^$BASEEXT/[^/]*\.(pm|pl|pod)$} } @filenames;
+    my @baseext_files = $BASEEXT eq 'lib' ? () : grep m{^$BASEEXT/[^/]*\.(pm|pl|pod)$}, @filenames;
     return (0, [ 'found %s in %s/', join(', ', sort map { s{^$BASEEXT/}{}; $_ } @baseext_files), $BASEEXT ]) if @baseext_files;
 
     $self->$log('checking for .PL, .pmc files');
-    my @PL_files = grep { !/^(Makefile|Build)\.PL$/ and /\.(PL|pmc)$/ } @filenames;
+    my @PL_files = grep +(!/^(Makefile|Build)\.PL$/ and /\.(PL|pmc)$/), @filenames;
     return (0, [ 'found %s', join(', ', sort @PL_files) ]) if @PL_files;
 
     $self->$log('checking for extra files in lib/');
     # TODO: what about .pl?
-    my @non_pm_pod_files = grep { !m{\.(?:pm|pod)$} } grep { m{^lib/} } @filenames;
+    my @non_pm_pod_files = grep !m{\.(?:pm|pod)$}, grep m{^lib/}, @filenames;
     return (0, [ 'found non-installable file%s %s', @non_pm_pod_files > 1 ? 's' : '', join(', ', sort @non_pm_pod_files) ]) if @non_pm_pod_files;
 
     return 1;

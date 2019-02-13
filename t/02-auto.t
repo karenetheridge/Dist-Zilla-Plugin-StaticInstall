@@ -45,7 +45,7 @@ my $munge_line;
     with 'Dist::Zilla::Role::FileMunger';
     sub munge_files {
         my $self = shift;
-        foreach my $file (grep { $_->name eq 'Makefile.PL' or $_->name eq 'Build.PL' } @{ $self->zilla->files }) {
+        foreach my $file (grep +($_->name eq 'Makefile.PL' or $_->name eq 'Build.PL'), @{ $self->zilla->files }) {
             $file->content($file->content . "\nETHER WUZ HERE\n");  $munge_line = __LINE__;
         }
     }
@@ -544,7 +544,7 @@ subtest $_->{test_name} => sub
     ) or diag 'got distmeta: ', explain $tzil->distmeta;
 
     cmp_deeply(
-        [ map { colorstrip($_) } @{ $tzil->log_messages } ],
+        [ map colorstrip($_), @{ $tzil->log_messages } ],
         supersetof(map { s/__MUNGE_LINE__/$munge_line/; '[StaticInstall] ' . $_ } @{ $config->{messages} }),
         $config->{test_name},
     );

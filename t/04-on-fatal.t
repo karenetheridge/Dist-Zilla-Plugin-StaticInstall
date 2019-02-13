@@ -33,7 +33,7 @@ like(
 
 cmp_deeply(
     $tzil->log_messages,
-    supersetof(map { '[StaticInstall] ' . $_ }
+    supersetof(map '[StaticInstall] '.$_,
         'checking dynamic_config',
         'checking configure prereqs',
         'checking build prereqs',

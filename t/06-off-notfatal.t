@@ -56,8 +56,8 @@ cmp_deeply(
 ) or diag 'got distmeta: ', explain $tzil->distmeta;
 
 cmp_deeply(
-    [ map { colorstrip($_) } @{ $tzil->log_messages } ],
-    supersetof(map { '[StaticInstall] ' . $_ }
+    [ map colorstrip($_), @{ $tzil->log_messages } ],
+    supersetof(map '[StaticInstall] '.$_,
         'checking dynamic_config',
         'checking configure prereqs',
         'checking build prereqs',
