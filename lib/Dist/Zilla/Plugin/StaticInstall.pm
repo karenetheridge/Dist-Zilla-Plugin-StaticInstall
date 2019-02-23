@@ -11,8 +11,7 @@ use Moose;
 with 'Dist::Zilla::Role::MetaProvider',
     'Dist::Zilla::Role::InstallTool';
 
-use Moose::Util::TypeConstraints;
-use MooseX::Types::Moose qw(Str Bool);
+use Types::Standard qw(Enum Str Bool);
 use Scalar::Util 'blessed';
 use List::Util 1.33 qw(first any);
 no autovivification;
@@ -20,10 +19,9 @@ use Term::ANSIColor 3.00 'colored';
 use Path::Tiny;
 use namespace::autoclean;
 
-my $mode_type = enum([qw(off on auto)]);
-coerce $mode_type, from Str, via { $_ eq '0' ? 'off' : $_ eq '1' ? 'on' : $_ };
 has mode => (
-    is => 'ro', isa => $mode_type,
+    is => 'ro',
+    isa => (Enum[qw(off on auto)])->plus_coercions(Str, sub { $_ eq '0' ? 'off' : $_ eq '1' ? 'on' : $_ }),
     default => 'on',
     coerce => 1,
 );
